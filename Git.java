@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -13,6 +14,7 @@ class Git {
             File test = new File("test.txt");
             test.createNewFile();
             System.out.println(hash(test.getPath()));
+            createBlob(test.getPath());
         } catch (IOException e) {
             return;
         }      
@@ -77,5 +79,26 @@ class Git {
             System.out.println("No such algorithm");
             return "";
         }
+    }
+
+    public static void createBlob(String filePath) {
+        try {
+            String hash = hash(filePath);
+            File blob = new File("git/objects/" + hash);
+
+            BufferedReader br = new BufferedReader(new FileReader(filePath));
+            int c;
+            FileWriter wr = new FileWriter(blob);
+            while ((c = br.read()) != -1) {
+                wr.write(c);
+            }
+
+            wr.close();
+            br.close();
+
+        } catch (IOException e) {
+            return;
+        }
+
     }
 }
