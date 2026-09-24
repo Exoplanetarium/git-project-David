@@ -15,6 +15,13 @@ class Git {
             test.createNewFile();
             System.out.println(hash(test.getPath()));
             createBlob(test.getPath());
+            addToIndex(test.getPath());
+
+            File testFolder = new File("testing/test.txt");
+            testFolder.createNewFile();
+            System.out.println(hash(testFolder.getPath()));
+            createBlob(testFolder.getPath());
+            addToIndex(testFolder.getPath());
         } catch (IOException e) {
             return;
         }      
@@ -99,6 +106,25 @@ class Git {
         } catch (IOException e) {
             return;
         }
+    }
 
+    public static void addToIndex(String filePath) {
+        try {
+            String hash = hash(filePath);
+            
+            FileWriter wr = new FileWriter("git/index", true);
+
+            // checks if file is empty
+            if (hash("git/index").equals("da39a3ee5e6b4b0d3255bfef95601890afd80709")) {
+                wr.write(hash + " " + filePath);
+            } else {
+                wr.write("\n" + hash + " " + filePath);
+            }
+
+            wr.close();
+
+        } catch (IOException e) {
+            return;
+        }
     }
 }
