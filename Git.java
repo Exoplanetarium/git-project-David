@@ -110,15 +110,28 @@ class Git {
 
     public static void addToIndex(String filePath) {
         try {
-            String hash = hash(filePath);
+            String entry = hash(filePath) + " " + filePath;
             
             FileWriter wr = new FileWriter("git/index", true);
+            BufferedReader br = new BufferedReader(new FileReader("git/index"));
+            
+            // checks if entry already exists
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.equals(entry)) {
+                    br.close();
+                    wr.close();
+                    return;
+                }
+            }
+
+            br.close();
 
             // checks if file is empty
             if (hash("git/index").equals("da39a3ee5e6b4b0d3255bfef95601890afd80709")) {
-                wr.write(hash + " " + filePath);
+                wr.write(entry);
             } else {
-                wr.write("\n" + hash + " " + filePath);
+                wr.write("\n" + entry);
             }
 
             wr.close();
