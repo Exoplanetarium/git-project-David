@@ -22,6 +22,7 @@ class Git {
             System.out.println(hash(testFolder.getPath()));
             createBlob(testFolder.getPath());
             addToIndex(testFolder.getPath());
+            addToIndex(testFolder.getPath());
         } catch (IOException e) {
             return;
         }      
